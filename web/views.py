@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 import requests
+from web.models import Contact, Team, Blog
+from django.core.paginator import Paginator
 
 API_KEY = "e7d8ba293c994bb296094927262402"
 
@@ -47,14 +50,59 @@ def home(request):
     context = {
         "data": weather_data
     }
-
+    print(context)
     return render(request, "home.html", context)
 
 def about(request):
-    return render(request, "about.html")
+    teams = Team.objects.all()
+    context = {
+        "teams":teams
+    }
+    return render(request, "about.html", context)
+
 def blog(request):
-    return render(request, "blog.html")
-def blog_detail(request):
-    return render(request, "blog_detail.html")
+    blog_list = Blog.objects.all().order_by("-create_at")
+
+    paginator = Paginator(blog_list, 6)  # 6 blogs per page
+    page_number = request.GET.get("page")
+    blogs = paginator.get_page(page_number)
+
+    context = {
+        "blogs": blogs
+    }
+
+    return render(request, "blog.html", context)
+
+
+def blog_detail(request, id):
+    blog = get_object_or_404(Blog, id=id)
+
+    prev_blog = Blog.objects.filter(id__lt=blog.id).order_by('-id').first()
+    next_blog = Blog.objects.filter(id__gt=blog.id).order_by('id').first()
+
+    context = {
+        "blog": blog,
+        "prev_blog": prev_blog,
+        "next_blog": next_blog
+    }
+
+    return render(request, "blog_detail.html", context)
 def contact(request):
+    if request.method == "POST":
+        fullname_ = request.POST.get("fullname")
+        email_ = request.POST.get("email")
+        subject_ = request.POST.get("subject")
+        message_ = request.POST.get("message")
+
+        Contact.objects.create(
+            fullname=fullname_,
+            email=email_,
+            subject=subject_,
+            message=message_
+        )
+
+        messages.success(request, "Your request submitted successfully.")
+
+        return redirect("contact")   # redirect to avoid resubmission
+
     return render(request, "contact.html")
