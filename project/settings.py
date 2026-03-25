@@ -29,7 +29,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["*",'bitapp.pythonanywhere.com', 'localhost', '127.0.0.1']
 
-
 # Application definition
 
 INSTALLED_APPS = [
