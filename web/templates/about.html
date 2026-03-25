@@ -83,27 +83,16 @@ About
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
 
-        <!-- Team Member -->
+        {% for team in teams %}
         <div class="bg-white p-6 rounded-3xl shadow-lg text-center hover:shadow-2xl transition">
-            <img src="https://t3.ftcdn.net/jpg/06/99/46/60/360_F_699466075_DaPTBNlNQTOwwjkOiFEoOvzDV0ByXR9E.jpg"
+            <img src="{{team.image.url}}"
                  class="w-32 h-32 mx-auto rounded-full object-cover mb-4">
-            <h3 class="text-xl font-bold text-gray-800">Brijesh</h3>
-            <p class="text-indigo-600 text-sm">Founder & Developer</p>
+            <h3 class="text-xl font-bold text-gray-800">{{team.name|title}}</h3>
+            <p class="text-indigo-600 text-sm">{{team.designation}}</p>
         </div>
+        {% endfor %}
 
-        <div class="bg-white p-6 rounded-3xl shadow-lg text-center hover:shadow-2xl transition">
-            <img src="https://img.freepik.com/free-photo/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg?semt=ais_rp_progressive&w=740&q=80"
-                 class="w-32 h-32 mx-auto rounded-full object-cover mb-4">
-            <h3 class="text-xl font-bold text-gray-800">Team Member</h3>
-            <p class="text-indigo-600 text-sm">UI/UX Designer</p>
-        </div>
-
-        <div class="bg-white p-6 rounded-3xl shadow-lg text-center hover:shadow-2xl transition">
-            <img src="https://media.istockphoto.com/id/1398385367/photo/happy-millennial-business-woman-in-glasses-posing-with-hands-folded.jpg?s=612x612&w=0&k=20&c=Wd2vTDd6tJ5SeEY-aw0WL0bew8TAkyUGVvNQRj3oJFw="
-                 class="w-32 h-32 mx-auto rounded-full object-cover mb-4">
-            <h3 class="text-xl font-bold text-gray-800">Team Member</h3>
-            <p class="text-indigo-600 text-sm">Backend Engineer</p>
-        </div>
+     
 
     </div>
 
@@ -116,7 +105,7 @@ About
         <p class="mb-6">
             Contact us today and transform your ideas into reality.
         </p>
-        <a href="#"
+        <a href="{% url 'contact' %}"
            class="bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
             Contact Us
         </a>
